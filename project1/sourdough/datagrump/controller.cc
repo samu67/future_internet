@@ -7,7 +7,7 @@ using namespace std;
 
 /* Default constructor */
 Controller::Controller( const bool debug )
-  : debug_( debug ), size(45)
+  : debug_( debug ), n(2)
 {}
 
 /* Get current window size, in datagrams */
@@ -22,7 +22,7 @@ unsigned int Controller::window_size()
 	 << " window size is " << the_window_size << endl;
   }
 
-  return size;
+  return the_window_size;
 }
 
 /* A datagram was sent */
@@ -34,9 +34,7 @@ void Controller::datagram_was_sent( const uint64_t sequence_number,
 				    /* datagram was sent because of a timeout */ )
 {
   /* Default: take no action */
-  if(after_timeout){
-    size /=2;
-  }
+  
   if ( debug_ ) {
     cerr << "At time " << send_timestamp
 	 << " sent datagram " << sequence_number << " (timeout = " << after_timeout << ")\n";
@@ -54,13 +52,7 @@ void Controller::ack_received( const uint64_t sequence_number_acked,
                                /* when the ack was received (by sender) */
 {
   /* Default: take no action */
-  int n = timestamp_ack_received - recv_timestamp_acked; 
-  if (n < 80 or (size<70 and n<90 ))
-  {
-    size = size+4;
-  }
-  
-
+  //n++;
 
   if ( debug_ ) {
     cerr << "At time " << timestamp_ack_received
