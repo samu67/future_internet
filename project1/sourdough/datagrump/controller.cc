@@ -7,7 +7,7 @@ using namespace std;
 
 /* Default constructor */
 Controller::Controller( const bool debug )
-  : debug_( debug ), n(2)
+  : debug_( debug )
 {}
 
 /* Get current window size, in datagrams */
