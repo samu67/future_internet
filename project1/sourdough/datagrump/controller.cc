@@ -34,11 +34,7 @@ void Controller::datagram_was_sent( const uint64_t sequence_number,
 				    /* datagram was sent because of a timeout */ )
 {
   /* Default: take no action */
-  /*if (after_timeout)
-  {
-    n/=4;
-  }
-  */
+  
   if ( debug_ ) {
     cerr << "At time " << send_timestamp
 	 << " sent datagram " << sequence_number << " (timeout = " << after_timeout << ")\n";
