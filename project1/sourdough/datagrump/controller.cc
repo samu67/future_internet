@@ -22,7 +22,7 @@ unsigned int Controller::window_size()
 	 << " window size is " << the_window_size << endl;
   }
 
-  return 45;
+  return size;
 }
 
 /* A datagram was sent */
@@ -34,11 +34,11 @@ void Controller::datagram_was_sent( const uint64_t sequence_number,
 				    /* datagram was sent because of a timeout */ )
 {
   /* Default: take no action */
-  /*if(after_timeout){
+  if(after_timeout){
     size /=2;
     slow_start = false;
   }
-  */
+  
   if ( debug_ ) {
     cerr << "At time " << send_timestamp
 	 << " sent datagram " << sequence_number << " (timeout = " << after_timeout << ")\n";
@@ -55,7 +55,7 @@ void Controller::ack_received( const uint64_t sequence_number_acked,
 			       const uint64_t timestamp_ack_received )
                                /* when the ack was received (by sender) */
 {
-  /* Default: take no action 
+  /* Default: take no action */
  
     int n = recv_timestamp_acked - send_timestamp_acked; 
     int m = timestamp_ack_received - recv_timestamp_acked;
@@ -74,7 +74,7 @@ void Controller::ack_received( const uint64_t sequence_number_acked,
     size = size-2 ;
   }
   
-*/
+
   /*
   
   
