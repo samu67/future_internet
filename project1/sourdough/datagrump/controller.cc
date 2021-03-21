@@ -7,14 +7,15 @@ using namespace std;
 
 /* Default constructor */
 Controller::Controller( const bool debug )
-  : debug_( debug )
+  : debug_( debug ), n(42)
 {}
 
 /* Get current window size, in datagrams */
 unsigned int Controller::window_size()
 {
-
-  unsigned int the_window_size = 50;
+  //42 or 45
+  
+  unsigned int the_window_size = n;
 
   if ( debug_ ) {
     cerr << "At time " << timestamp_ms()
@@ -33,7 +34,11 @@ void Controller::datagram_was_sent( const uint64_t sequence_number,
 				    /* datagram was sent because of a timeout */ )
 {
   /* Default: take no action */
-
+  if (after_timeout)
+  {
+    n/=2;
+  }
+  
   if ( debug_ ) {
     cerr << "At time " << send_timestamp
 	 << " sent datagram " << sequence_number << " (timeout = " << after_timeout << ")\n";
