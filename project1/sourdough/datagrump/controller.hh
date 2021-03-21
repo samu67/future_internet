@@ -11,6 +11,7 @@ private:
   bool debug_; /* Enables debugging output */
 
   /* Add member variables here */
+  unsigned int size;
 
 public:
   /* Public interface for the congestion controller */
