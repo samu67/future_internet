@@ -10,12 +10,12 @@ class Controller
 private:
   bool debug_; /* Enables debugging output */
 
-  /* Add member variables here */
+  /* Add member variables here
   unsigned int size;
   unsigned int min;
   unsigned int seq;
   bool slow_start;
-
+ */
 public:
   /* Public interface for the congestion controller */
   /* You can change these if you prefer, but will need to change
