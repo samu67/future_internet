@@ -7,7 +7,7 @@ using namespace std;
 
 /* Default constructor */
 Controller::Controller( const bool debug )
-  : debug_( debug )//, size(4), min(45), seq(1), slow_start(true)
+  : debug_( debug ), size(4), min(45), seq(1), slow_start(true)
 {}
 
 /* Get current window size, in datagrams */
@@ -22,7 +22,7 @@ unsigned int Controller::window_size()
 	 << " window size is " << the_window_size << endl;
   }
 */
-  return 45;
+  return size;
 }
 
 /* A datagram was sent */
@@ -55,25 +55,42 @@ void Controller::ack_received( const uint64_t sequence_number_acked,
 			       const uint64_t timestamp_ack_received )
                                /* when the ack was received (by sender) */
 {
-  /* Default: take no action 
+  /* Default: take no action*/ 
     int n = recv_timestamp_acked - send_timestamp_acked; 
     int m = timestamp_ack_received - recv_timestamp_acked;
     uint64_t max_acked_seq = max(max_acked_seq, sequence_number_acked);
     bool b = (max_acked_seq == sequence_number_acked);
     
     
-  if (b and m <130 and n < 1)
+  if (b and m <105 and n < 1)
   {
-    size = size+1;
+    size = size+2;
   
+  }else if (b and m <100 and n < 1)
+  {
+    size = size+8;
+  }else if (b and m <95 and n < 1)
+  {
+    size = size+12;
+  }else if (b and m <90 and n < 1)
+  {
+    size = size+16;
   }
 
-  if(b and m <130 and size > 48 and n > 1)
+
+  if(b and m <100 and size > 40 and n > 1)
   {
-    size = size-2 ;
+    size = size*0.80 ;
+  }else if(b and m <100 and size > 40 and n > 2)
+  {
+    size = size*0.70 ;
+  }else if(b and m <100 and size > 40 and n > 3)
+  {
+    size = size*0.60 ;
   }
   
-*/
+  
+
  
   /*
   
