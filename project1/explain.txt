@@ -1,0 +1,2 @@
+i just changed the window size from the default value to 45.
+every change i did worked well on my pc but may be caused an error online, so that i got some times -1 point on the list. 
