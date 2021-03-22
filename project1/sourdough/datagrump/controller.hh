@@ -1,51 +1,46 @@
-#ifndef CONTEST_MESSAGE_HH
-#define CONTEST_MESSAGE_HH
+#ifndef CONTROLLER_HH
+#define CONTROLLER_HH
 
-#include <string>
 #include <cstdint>
 
-struct ContestMessage
+/* Congestion controller interface */
+
+class Controller
 {
-  struct Header {
-    uint64_t sequence_number;
-    uint64_t send_timestamp;
+private:
+  bool debug_; /* Enables debugging output */
 
-    uint64_t ack_sequence_number;
-    uint64_t ack_send_timestamp;
-    uint64_t ack_recv_timestamp;
-    uint64_t ack_payload_length;
+  /* Add member variables here
+  unsigned int size;
+  unsigned int min;
+  unsigned int seq;
+  bool slow_start;
+ */
+public:
+  /* Public interface for the congestion controller */
+  /* You can change these if you prefer, but will need to change
+     the call site as well (in sender.cc) */
 
-    /* Header for new message */
-    Header( const uint64_t s_sequence_number );
+  /* Default constructor */
+  Controller( const bool debug );
 
-    /* Parse header from wire */
-    Header( const std::string & str );
+  /* Get current window size, in datagrams */
+  unsigned int window_size();
 
-    /* Make wire representation of header */
-    std::string to_string() const;
-  } header;
+  /* A datagram was sent */
+  void datagram_was_sent( const uint64_t sequence_number,
+			  const uint64_t send_timestamp,
+			  const bool after_timeout );
 
-  std::string payload;
+  /* An ack was received */
+  void ack_received( const uint64_t sequence_number_acked,
+		     const uint64_t send_timestamp_acked,
+		     const uint64_t recv_timestamp_acked,
+		     const uint64_t timestamp_ack_received );
 
-  /* New message */
-  ContestMessage( const uint64_t s_sequence_number,
-		  const std::string & s_payload );
-
-  /* Parse incoming datagram from wire */
-  ContestMessage( const std::string & str );
-
-  /* Fill in the send_timestamp for an outgoing datagram */
-  void set_send_timestamp();
-
-  /* Make wire representation of datagram */
-  std::string to_string() const;
-
-  /* Transform into an ack of the ContestMessage */
-  void transform_into_ack( const uint64_t sequence_number,
-			   const uint64_t recv_timestamp );
-
-  /* Is this message an ack? */
-  bool is_ack() const;
+  /* How long to wait (in milliseconds) if there are no acks
+     before sending one more datagram */
+  unsigned int timeout_ms();
 };
 
-#endif /* CONTEST_MESSAGE_HH */
+#endif
