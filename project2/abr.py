@@ -6,9 +6,22 @@ class CALLBACK_EVENT( Enum ):
     DOWNLOAD_COMPLETED = 1
     TIMEOUT  = 2
     REBUFFERING = 3
+bit_rate_a = [300,750,1200,1850,2850,4300]
+bit_rate_d = [4300,2850,1850,1200,750,300]
+chunk_download_start = []
+b_m = 4
+b_c = 0
+MSD = 4.0
 
 
+def determine_e(bit_rates):
+    e = []
+    for i in range(len(bit_rates) -1):
+        e.append((bit_rates[i+1]- bit_rates[i])/bit_rates[i])
+    return e
 
+e = determine_e(bit_rate_a)
+print(e)
 
 def abr(
     typ,
@@ -55,12 +68,13 @@ def abr(
     
     #initial
     if typ == CALLBACK_EVENT.INIT:
+        chunk_download_start.append(current_time)
         return 0, 0, 0.0
 
     #rebuffering or timeout, ignore 
     if typ == CALLBACK_EVENT.TIMEOUT or typ == CALLBACK_EVENT.REBUFFERING:
         return current_chunk_quality, current_chunk, 0
-    
+
 
     next_chunk = current_chunk + 1
     
@@ -69,5 +83,36 @@ def abr(
     
     if next_chunk == len(video[0]):
         next_chunk = -1
+
     
-    return 0, next_chunk, 0.0
+
+    if typ == CALLBACK_EVENT.DOWNLOAD_COMPLETED:
+        next_quality = current_chunk_quality
+        b_c = current_chunk - playback_chunk
+        SFT = current_time - chunk_download_start[current_chunk] 
+        #print("sft", SFT)
+        m = MSD/SFT
+        #print("m", m)
+        if( b_c > b_m and current_chunk_quality < 5 and m > 1 + e[current_chunk_quality] ) or (current_chunk_quality < 5  and b_c > 10):
+                print("switch up")
+                next_quality = current_chunk_quality +1
+
+        
+        
+        if b_c < b_m:
+            print("switch down")
+            for b in bit_rate_d:
+                next_quality = 0
+                if b < m * current_chunk_quality:
+                    next_quality = bit_rate_a.index(b)
+                    continue
+        
+        chunk_download_start.append(current_time)
+        print("b_c", b_c ,"sft", SFT, "m", m, "next quality " , next_quality, "next chunk " , next_chunk)
+        return next_quality, next_chunk, 0
+
+       
+        
+
+    
+    return 0, next_chunk, 0
