@@ -9,7 +9,7 @@ class CALLBACK_EVENT( Enum ):
 bit_rate_a = [300,750,1200,1850,2850,4300]
 bit_rate_d = [4300,2850,1850,1200,750,300]
 chunk_download_start = []
-b_m = 4
+b_m = 2
 b_c = 0
 MSD = 4.0
 
@@ -93,7 +93,7 @@ def abr(
         #print("sft", SFT)
         m = MSD/SFT
         #print("m", m)
-        if( b_c > b_m and current_chunk_quality < 5 and m > 1 + e[current_chunk_quality] ) or (current_chunk_quality < 5  and b_c > 10):
+        if( b_c > b_m and current_chunk_quality < 5 and m > 1 + e[current_chunk_quality] ) or (current_chunk_quality < 5  and b_c > 6):
                 print("switch up")
                 next_quality = current_chunk_quality +1
 
