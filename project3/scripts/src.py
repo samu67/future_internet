@@ -24,9 +24,12 @@ with open('../input_data/valid_isls.txt') as vals:
     for i in range(340960):
         line = vals.readline()
         entry = line.split(',')
-        vals_lis.append(entry[:2])
+        entry[0] = int(entry[0])
+        entry[1] = int(entry[1])
+        entry[2] = float(entry[2][:-1])
+        vals_lis.append(entry)
 
-print(vals_lis[33])
+print(vals_lis[0])
 sats = [0]*1601
 rang = 340960
 connected = 0
@@ -34,7 +37,7 @@ with open('../output_data/sat_links.txt','w') as out:
     while connected < 1500:
         i = random.randrange(0,rang)
         c = vals_lis[i]
-        if sats[int(c[0])] < 4 and sats[int(c[1])] < 4:
+        if sats[int(c[0])] < 4 and sats[int(c[1])] < 4 and c[2] > 2437 :
             sats[int(c[0])]+=1
             sats[int(c[1])]+=1
             if sats[int(c[0])]==4:
@@ -45,7 +48,7 @@ with open('../output_data/sat_links.txt','w') as out:
             out.writelines(outt)
         rang-=1
         vals_lis.remove(c)
-        print(connected, len(vals_lis),i)
+        print(connected, len(vals_lis),i, rang)
 
     
 
