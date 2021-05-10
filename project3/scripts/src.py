@@ -37,7 +37,7 @@ with open('../output_data/sat_links.txt','w') as out:
     while connected < 1500:
         i = random.randrange(0,rang)
         c = vals_lis[i]
-        if sats[int(c[0])] < 4 and sats[int(c[1])] < 4 and c[2] > 2437 :
+        if sats[int(c[0])] < 4 and sats[int(c[1])] < 4 and c[2] > 3437 :
             sats[int(c[0])]+=1
             sats[int(c[1])]+=1
             if sats[int(c[0])]==4:
