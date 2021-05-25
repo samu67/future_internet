@@ -40,19 +40,64 @@ def solve(in_graph_filename, in_demands_filename, in_paths_filename, out_rates_f
     all_flows = wanteutility.get_all_flows(all_paths, demands)
 
     # Perform max-min fair allocation algorithm
-    # TODO: ...
-    # TODO: ...
-    print("TODO")
-    # TODO: ...
-    # TODO: ...
+    edges = list(graph.edges)
+    print(edges.reverse())
+
+    flow_rate = {}
+    print('new prob')
+
+  
+    
+    while len(all_flows) > 0:
+        n = 0
+        c = []
+        e = 0
+        sk = 1000000000000
+
+        for edge in edges:
+            c_n = 0
+            c_c = []
+            edge_l = list(edge)
+            for flow in all_flows:
+                flow_l = list(flow)
+                
+                if edge_l[0] in flow_l and edge_l[1] in flow_l and flow_l.index(edge_l[1]) - flow_l.index(edge_l[0]) == 1:
+                    c_n+=1
+                    c_c.append(flow)
+                
+            if c_n > 0 and graph.get_edge_data(edge[0],edge[1])['weight']/c_n < sk:
+                n = c_n
+                e = edge
+                c = c_c
+                sk = graph.get_edge_data(edge[0],edge[1])['weight']/c_n 
+        
+        print('n', n, 'c', c, 'e', e)
+        print('all flows', all_flows)
+        for f in c:
+            flow_rate.update({f:sk})
+            for i in range(len(f)-1):
+                f_l = list(f)
+                graph.get_edge_data(f_l[i],f_l[i+1])['weight'] -= sk  
+            
+        
+        edges.remove(e)
+        all_flows = [f for f in all_flows if f not in c]
+
+        #print(all_flows)
+
+  
+            
+
+
 
     # Finally, write the rates to the output file
     with open(out_rates_filename, "w+") as rate_file:
-        # TODO: ...
-        # TODO: ...
-        print("TODO")
-        # TODO: ...
-        # TODO: ...
+        for p in all_paths:
+            if p in flow_rate.keys():
+                rate_file.write(str(round(flow_rate[p],6) ) + '\n')
+
+            else:
+                rate_file.write(str(0) + '\n')
 
 
 def main():
