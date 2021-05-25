@@ -94,7 +94,9 @@ def solve(in_graph_filename, in_demands_filename, in_paths_filename, out_rates_f
     with open(out_rates_filename, "w+") as rate_file:
         for p in all_paths:
             if p in flow_rate.keys():
-                rate_file.write(str("{:10.6f}".format(flow_rate[p]) ) + '\n')
+                s = str("{:10.6f}".format(flow_rate[p]))
+                s = s.split()[-1]
+                rate_file.write(s+ '\n')
                 
 
             else:
