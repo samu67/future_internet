@@ -97,7 +97,12 @@ def solve(in_graph_filename, in_demands_filename, in_paths_filename, out_rates_f
         for p in path_var.keys():
             p_var = path_var.get(p)
             r = var_val_map.get(p_var)
-            rate_file.write(str(r)+'\n')
+            if r != 0.0:
+                s = str("{:10.6f}".format(r))
+                s = s.split()[-1]
+                rate_file.write(s+ '\n')
+            else:
+                rate_file.write(str(r)+ '\n')
             
 
 
