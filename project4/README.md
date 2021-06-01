@@ -2,12 +2,12 @@
 
 ### Information
 
-* Group number: *[[ your group number ]]*
-* Student NetIDs: *[[ your netid1 ]]*, *[[ your netid2 ]]*
+* Group number: *[[ 34 ]]*
+* Student NetIDs: *[[ 16-917-635 ]]*, *[[ your netid2 ]]*
 
 ### Part C explanation
 
-*[[ Replace this text with an explanation of the algorithm you use to select the paths in part C. ]]*
+*[[ for each node pair, we find the shortest paths by using networkx.all_shortest_pathss. we limit the the number of paths to 10 per pair nodes. We output the paths found. ]]*
 
 ### Getting started
 
